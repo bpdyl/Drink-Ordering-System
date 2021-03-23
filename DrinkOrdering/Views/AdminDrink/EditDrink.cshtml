@@ -1,0 +1,133 @@
+﻿@model DrinkOrdering.Models.ViewModels.ProductCategoryViewModel
+@using DrinkOrdering.Extensions
+@{
+    ViewData["Title"] = "EditDrinks";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Edit Drinks</h1>
+<hr />
+<br />
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<div class="container">
+    <form asp-action="EditDrink" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group row">
+            <div class="col-3">
+                <h4><label asp-for="Drinks.CategoryId" class="control-label"></label></h4>
+            </div>
+            <div class="col-9">
+                <select id="ddlCategorylist" asp-for="Drinks.CategoryId" asp-items="Model.CategoryList.ToSelectListItem(Model.Drinks.CategoryId)" class="form-control"></select>
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <div class="col-3">
+                <h4><label asp-for="Drinks.Name" class="control-label"></label></h4>
+            </div>
+            <div class="col-9">
+                <input asp-for="Drinks.Name" class="form-control" />
+                <span asp-validation-for="Drinks.Name" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <div class="col-3">
+                <h4><label asp-for="Drinks.ShortDescription" class="control-label"></label></h4>
+            </div>
+            <div class="col-9">
+                <input asp-for="Drinks.ShortDescription" class="form-control" />
+                <span asp-validation-for="Drinks.ShortDescription" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-3">
+                <h4><label asp-for="Drinks.LongDescription" class="control-label"></label></h4>
+            </div>
+            <div class="col-9">
+                <textarea rows="8" cols="10" asp-for="Drinks.LongDescription" class="form-control"></textarea>
+                <span asp-validation-for="Drinks.LongDescription" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <h4><label asp-for="Drinks.IsPreferredDrink" class="control-label"></label></h4>
+            </div>
+            <div class="col-9">
+                <input id="IsPreferredDrink" type="checkbox" @(Model.Drinks.IsPreferredDrink ? "checked='checked'" : "") style="" onchange="" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <h4><label asp-for="Drinks.InStock" class="control-label"></label></h4>
+            </div>
+            <div class="col-9">
+                <input id="InStock" type="checkbox" @(Model.Drinks.InStock ? "checked='checked'" : "") style="" onchange="" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-3">
+                <h4><label asp-for="Drinks.ImageThumbnailUrl" class="control-label"></label></h4>
+            </div>
+            <div class="col-9">
+                <input type="file" name="file" value="file" asp-for="Drinks.ImageThumbnailUrl" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            @if (Model.Drinks.ImageThumbnailUrl != null)
+            {
+                <img style="width:200px;height:200px" src="@Url.Action("getImage","AdminDrink",new { DrinkId = @Model.Drinks.DrinkId})" alt="@Model.Drinks.ShortDescription" id="ImageShow" />
+            }
+            else
+            {
+                <img style="width:200px;height:200px" src="~/Images/noimage.png" alt="No Image" id="ImageShow" />
+            }
+        </div>
+
+        <div class="form-group row">
+            <div class="col-3">
+                <h4><label asp-for="Drinks.Price" class="control-label"></label></h4>
+            </div>
+            <div class="col-9">
+                <div class="row">
+                    <div class="col-1">
+                        <b class="text-success">$</b>
+                    </div>
+                    <div class="col-11">
+                        <input asp-for="Drinks.Price" class="form-control" />
+                        <span asp-validation-for="Drinks.Price" class="text-danger"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <div class="col-3"></div>
+
+            <div class="col-9">
+                <div class="row">
+                    <div class="col-6">
+                        <input type="submit" value="Update Drinks" class="btn btn-primary form-control" />
+                    </div>
+                    <div class="col-6">
+                        <a asp-action="Index" class="btn btn-success form-control">Back to list</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

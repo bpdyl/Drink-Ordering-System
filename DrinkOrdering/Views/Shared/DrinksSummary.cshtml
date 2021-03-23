@@ -1,0 +1,30 @@
+﻿@model Drink
+
+<div class="col-sm-4 col-lg-4 col-md-4">
+    <div class="thumbnail">
+        @if (Model.ImageThumbnailUrl != null)
+        {
+            var base64 = Convert.ToBase64String(Model.ImageThumbnailUrl);
+            var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+            <img src='@imgsrc' height="100%" width="100%" />
+        }
+        else
+        {
+            <img src="~/images/noimg.png" height="100" width="100" />
+        }
+        <div class="caption">
+            <h3 class="pull-right">@Model.Price.ToString("c")</h3>
+            <h3>
+                <a asp-controller="Drink" asp-action="Details" asp-route-drinkId="@Model.DrinkId">@Model.Name</a>
+            </h3>
+            <p>@Model.ShortDescription</p>
+        </div>
+        <div class="addToCart text-right">
+            <p class="button ">
+                <a class="btn btn-success" id="cartButton" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-drinkId="@Model.DrinkId">
+                    Add to cart
+                </a>
+            </p>
+        </div>
+    </div>
+</div>

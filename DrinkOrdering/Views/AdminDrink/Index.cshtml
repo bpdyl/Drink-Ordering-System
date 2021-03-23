@@ -1,0 +1,147 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<DrinkOrdering.Models.Drink>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, Reflection.Mvc.Paging
+
+
+@{
+    ViewData["Title"] = "Drinks";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<br />
+<div class="row">
+    <div class="col-6">
+        <h2>Available Drinks</h2>
+    </div>
+    <div class="col-6">
+        <div class="text-right">
+            <a asp-action="AddDrink" class="btn btn-info">Add Drink</a>
+        </div>
+    </div>
+</div>
+
+<hr />
+<br />
+
+@*<form class="wrap">
+        <div class="search">
+            <input value="@ViewData["GetProducts"]" name="productsearch" type="text" class="searchTerm" placeholder="look for categories">
+            <button type="search" value="search" class="searchButton">
+                <i class="fa fa-search"></i>
+            </button>
+            <a asp-action="Index"><i class="fa fas-close"></i>Clear</a>
+        </div>
+    </form>*@
+
+<br />
+
+
+
+
+
+<div class="container">
+    @if (Model != null && Model.Count() > 0)
+    {
+        <table class="table table-striped border container">
+            <tr class="table-primary">
+                <th><label>Drink Name</label></th>
+                <th><label>Drink Category</label></th>
+                <th><label>Image</label></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            @foreach (var drinks in Model)
+            {
+                <tr>
+                    <th>
+                        @Html.DisplayFor(m => drinks.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(m => drinks.Category.CategoryName)
+                    </th>
+                    <th>
+                        @if (drinks.ImageThumbnailUrl != null)
+                        {
+                            var base64 = Convert.ToBase64String(drinks.ImageThumbnailUrl);
+                            var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+                            <img src='@imgsrc' height="100" width="100" />
+                        }
+                        else
+                        {
+                            <img src="~/images/noimg.png" height="100" width="100" />
+                        }
+                    </th>
+                    <th></th>
+                    <th></th>
+
+                    <th>
+                        <a class="btn btn-warning text-white" asp-action="EditDrink" asp-route-id="@drinks.DrinkId">Edit</a>
+                        &nbsp;
+                        <a class="btn btn-success" asp-action="ViewDrink" asp-route-id="@drinks.DrinkId">View</a>
+                        &nbsp;
+                        <a class="btn btn-danger" asp-action="DeleteDrink" asp-route-id="@drinks.DrinkId">Delete</a>
+ @**@                    @* <input id = "Delete" class="btn btn-danger" asp-action="DeleteDrink"
+                        onclick = "deleteDrink('@drinks.DrinkId')"
+                        type = "button"
+                        value = "Delete" />*@
+                    </th>
+                </tr>
+            }
+        </table>
+
+        <nav style="font-size:18px;letter-spacing:8px;margin-left:50%;margin-right:50%;">
+            @await this.Component.InvokeAsync("Pager", new { PagingList = this.Model })
+        </nav>
+
+    }
+    else
+    {
+        <h3 class="text-black-50 text-center">No Drinks Found</h3>
+    }
+
+</div>
+<script type="text/javascript">
+
+    function deleteDrink(DrinkId)
+{
+        debugger;
+        swal({
+                title: "Are you sure?",
+                text: "Are you sure that you want to delete this Order?",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                confirmButtonText: "Yes, delete it!",
+                confirmButtonColor: "#ec6c62"
+            },
+            function()
+             {
+                $.ajax({
+                        url: "/AdminDrink/DeleteDrink/",
+                        data:
+                  {
+                            "DrinkId": DrinkId
+                        },
+                        type: "DELETE"
+                    })
+                    .done(function(data)
+                          {
+                        sweetAlert
+                            ({
+                                    title: "Deleted!",
+                                    text: "Your file was successfully deleted!",
+                                    type: "success"
+                                },
+                                function()
+                             {
+                                    window.location.href = '/AdminDrink/';
+                                });
+                    })
+                    .error(function(data)
+                      {
+                        swal("Oops", "We couldn't connect to the server!", "error");
+                    });
+            });
+    }
+</script>  

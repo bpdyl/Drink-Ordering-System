@@ -1,0 +1,87 @@
+﻿
+@model DrinkOrdering.Models.ViewModels.ProductCategoryViewModel
+@using DrinkOrdering.Extensions
+@{ 
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<br />
+<h2 class="text-info">@(Model.Drinks.DrinkId!=0 ? "Edit" : "Create") Drink</h2>
+<br />
+
+<div class="border container" style="padding:30px;">
+    <form method="post" enctype="multipart/form-data">
+        @if (Model.Drinks.DrinkId != 0)
+        {
+            <input type="hidden" asp-for="Drinks.DrinkId" />
+        }
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="Drinks.Name"></label>
+            </div>
+            <div class="col-6">
+                <input asp-for="Drinks.Name" class="form-control" />
+                <span asp-validation-for="Drinks.Name" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="Drinks.CategoryId"></label>
+            </div>
+            <div class="col-6">
+                <select id="ddlCategoryList" asp-for="Drinks.CategoryId" asp-items="Model.CategoryList.ToSelectListItem(Model.Drinks.CategoryId)" class="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="Drinks.ShortDescription"></label>
+            </div>
+            <div class="col-6">
+                <input asp-for="Drinks.ShortDescription" class="form-control" />
+                <span asp-validation-for="Drinks.ShortDescription" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="Drinks.LongDescription"></label>
+            </div>
+            <div class="col-6">
+                <input asp-for="Drinks.LongDescription" class="form-control" />
+                <span asp-validation-for="Drinks.LongDescription" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="Drinks.Price"></label>
+            </div>
+            <div class="col-6">
+                <input asp-for="Drinks.Price" class="form-control" />
+                <span asp-validation-for="Drinks.Price" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Drinks.ImageThumbnailUrl" class="control-label">Image</label>
+            <input type="file" size="40" asp-for="Drinks.ImageThumbnailUrl" class="form-control" id="ImageThumbnailUrl" />
+            <span asp-validation-for="Drinks.ImageThumbnailUrl" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <img src="..." class="rounded float-left img-thumbnail" alt="......" id="ImageShow">
+        </div>
+        <br />
+        <div class="form-group row">
+            <div class="col-3 offset-3">
+                <button type="submit" class="btn btn-primary form-control">
+                    @(Model.Drinks.DrinkId != 0 ? "Update" : "Create")
+                </button>
+            </div>
+            <div class="col-3">
+                <a asp-action="Index" class="btn btn-success form-control">Back to List</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

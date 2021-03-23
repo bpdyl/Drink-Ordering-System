@@ -1,0 +1,50 @@
+﻿
+@model IEnumerable<Category>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<br />
+<div class="row">
+    <div class="col-md-6 col-sm-5">
+        <h4>All Categories</h4>
+    </div>
+    <div class="col-md-6 col-sm-7">
+        <a asp-action="AddCategory" asp-controller="AdminCategory" class="btn btn-info float-right">Add Categories</a>
+    </div>
+</div>
+
+<hr />
+
+<div>
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-striped border whitebg">
+            <tr class="table-secondary">
+                <th>@Html.DisplayNameFor(m => m.CategoryName)</th>
+                <th></th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(m => item.CategoryName)</td>
+                    <td class="text-right">
+                        <a class="btn btn-warning text-white" asp-action="EditCategory" asp-route-id="@item.CategoryId">Edit</a> |
+                        <a class="btn btn-info text-white" asp-action="ViewCategory" asp-route-id="@item.CategoryId">View</a> |
+                        <a class="btn btn-danger text-white" asp-action="DeleteCategory" asp-route-id="@item.CategoryId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <div class="container">
+            <center>
+                <h4 class="text-black-50 mt-5">Opps!! No Categories available right now. shall we add some?</h4>
+            </center>
+        </div>
+    }
+</div>
